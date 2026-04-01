@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crypto-Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <div class="logo">⬡ Crypto-Tracker</div>
+  
+  </header>
+
+  <main>
+
+    <div class="grid" id="coinsGrid">
+      <div class="card skeleton"></div>
+      <div class="card skeleton"></div>
+      <div class="card skeleton"></div>
+      <div class="card skeleton"></div>
+      <div class="card skeleton"></div>
+      <div class="card skeleton"></div>
+      <div class="card skeleton"></div>
+      <div class="card skeleton"></div>
+    </div>
+
+    <div class="error-msg" id="errorMsg" style="display:none;">
+       Failed to load data. Please try again later.
+    </div>
+  </main>
+
+  <footer>
+    Data provided by <a href="https://www.coingecko.com" target="_blank">CoinGecko</a> 
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  color: #333;
+}
+
+header {
+  background: #000000;
+  color: white;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.tagline {
+  font-size: 13px;
+  color: #aaa;
+}
+
+
+.stat-item {
+  color: white;
+}
+
+main {
+  padding: 24px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.coin-identity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.coin-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.coin-name {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.coin-symbol {
+  font-size: 12px;
+  color: #888;
+  display: block;
+}
+
+.coin-rank {
+  font-size: 12px;
+  color: #888;
+  background: #f0f0f0;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.coin-price {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.coin-change {
+  font-size: 13px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.coin-change.up {
+  color: green;
+  background: #e6f9ee;
+}
+
+.coin-change.down {
+  color: red;
+  background: #fdecea;
+}
+
+.coin-meta {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.meta-label {
+  color: #888;
+}
+
+
+
+@keyframes shimmer {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.error-msg {
+  text-align: center;
+  padding: 40px;
+  color: red;
+  font-size: 14px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 12px;
+  color: #888;
+  border-top: 1px solid #ddd;
+  margin-top: 24px;
+}
+
+footer a {
+  color: #1a1a2e;
+}
+
+@media (max-width: 600px) {
+  .grid { grid-template-columns: 1fr; }
+  header { flex-direction: column; align-items: flex-start; }
+}
