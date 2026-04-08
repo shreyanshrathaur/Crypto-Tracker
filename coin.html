@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Coin Details</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <div class="header-left">
+      <div class="logo">
+        <span class="logo-icon">₿</span> Crypto Feed
+      </div>
+      <div class="tagline">Detailed View</div>
+    </div>
+    
+    <div class="controls-container">
+      <a href="index.html" class="control-element btn icon-btn" style="text-decoration:none; display:flex; gap: 8px;">
+        <svg fill="currentColor" width="16" height="16" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+        </svg>
+        Back
+      </a>
+      <button id="darkModeToggle" class="control-element btn icon-btn" title="Toggle Dark Mode">🌙</button>
+    </div>
+  </header>
+
+  <main class="coin-detail-main">
+    <div id="loadingMsg" class="loading-msg">Loading comprehensive data...</div>
+    <div class="error-msg" id="errorMsg" style="display:none;">
+       Failed to load data. Please try again later.
+    </div>
+
+    <!-- Container for dynamic injection -->
+    <div id="detailView" class="detail-container" style="display:none;">
+        <!-- Details map onto here via coin.js -->
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      Data provided by <a href="https://www.coingecko.com" target="_blank" rel="noopener noreferrer">CoinGecko</a> 
+    </div>
+  </footer>
+
+  <script src="api.js"></script>
+  <script src="theme.js"></script>
+  <script src="coin.js"></script>
+</body>
+</html>

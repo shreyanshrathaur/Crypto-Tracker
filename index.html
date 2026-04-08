@@ -3,29 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Crypto-Tracker</title>
+  <title>Crypto Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <header>
-    <div class="logo">⬡ Crypto-Tracker</div>
-  
+    <div class="header-left">
+      <div class="logo">
+        <span class="logo-icon">₿</span> Crypto Feed
+      </div>
+      <div class="tagline" id="lastUpdated">Updating...</div>
+    </div>
+    
+    <div class="controls-container">
+      <select id="currencySelect" class="control-element dropdown">
+        <option value="usd">USD ($)</option>
+        <option value="eur">EUR (€)</option>
+        <option value="inr" selected>INR (₹)</option>
+      </select>
+      
+      <select id="sortSelect" class="control-element dropdown">
+        <option value="market_cap">Sort: Market Cap</option>
+        <option value="price">Sort: Price</option>
+        <option value="percent_change">Sort: % Change</option>
+      </select>
+
+      <button id="refreshBtn" class="control-element btn icon-btn" title="Refresh">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+          <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+        </svg>
+      </button>
+
+      <button id="darkModeToggle" class="control-element btn icon-btn" title="Toggle Dark Mode">🌙</button>
+    </div>
   </header>
 
   <main>
-
     <div class="grid" id="coinsGrid">
-      <div class="card skeleton"></div>
-      <div class="card skeleton"></div>
-      <div class="card skeleton"></div>
-      <div class="card skeleton"></div>
-      <div class="card skeleton"></div>
-      <div class="card skeleton"></div>
-      <div class="card skeleton"></div>
-      <div class="card skeleton"></div>
+      <!-- Cards will be populated by JS -->
     </div>
 
     <div class="error-msg" id="errorMsg" style="display:none;">
@@ -34,9 +54,13 @@
   </main>
 
   <footer>
-    Data provided by <a href="https://www.coingecko.com" target="_blank">CoinGecko</a> 
+    <div class="footer-content">
+      Data provided by <a href="https://www.coingecko.com" target="_blank" rel="noopener noreferrer">CoinGecko</a> 
+    </div>
   </footer>
 
+  <script src="api.js"></script>
+  <script src="theme.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
