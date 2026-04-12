@@ -1,71 +1,98 @@
-const coinsGrid = document.getElementById("coinsGrid");
-const errorMsg = document.getElementById("errorMsg");
-const currencySelect = document.getElementById("currencySelect");
-const sortSelect = document.getElementById("sortSelect");
-const refreshBtn = document.getElementById("refreshBtn");
-const lastUpdated = document.getElementById("lastUpdated");
+let coinsGrid = document.getElementById("coinsGrid");
+let errorMsg = document.getElementById("errorMsg");
+let currencySelect = document.getElementById("currencySelect");
+let sortSelect = document.getElementById("sortSelect");
+let refreshBtn = document.getElementById("refreshBtn");
+let lastUpdated = document.getElementById("lastUpdated");
 
 let currentData = [];
 
-const getCurrencySymbol = (currency) => {
-  const symbols = { 'usd': '$', 'eur': '€', 'inr': '₹' };
-  return symbols[currency] || '$';
-};
+function getCurrencySymbol(currency) {
+  if (currency === "usd") {
+    return "$";
+  } else if (currency === "eur") {
+    return "€";
+  } else if (currency === "inr") {
+    return "₹";
+  } else {
+    return "$";
+  }
+}
 
 async function loadMarketData() {
   errorMsg.style.display = "none";
-  const currency = currencySelect.value;
-  
+  let currency = currencySelect.value;
+
   try {
     currentData = await window.api.getMarkets(currency);
-    
-    // Update time snippet
-    const now = new Date();
-    lastUpdated.textContent = `Updated at ${now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true })}`;
-    
+
+    let now = new Date();
+    let timeString = now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+    lastUpdated.textContent = "Updated at " + timeString;
+
     renderCoins();
   } catch (error) {
     coinsGrid.innerHTML = "";
     errorMsg.style.display = "block";
-    console.error(error);
+    console.error("Oops something broke: ", error);
   }
 }
 
 function renderCoins() {
-  if (!currentData || !currentData.length) return;
+  if (currentData === undefined || currentData.length === 0) {
+    return;
+  }
 
-  const currency = currencySelect.value;
-  const symbol = getCurrencySymbol(currency);
-  const sortBy = sortSelect.value;
-  
-  let sortedData = [...currentData];
+  let currency = currencySelect.value;
+  let symbol = getCurrencySymbol(currency);
+  let sortBy = sortSelect.value;
 
-  // Perform Local Sorting
+  let sortedData = currentData.slice();
+
   if (sortBy === 'price') {
-    sortedData.sort((a, b) => b.current_price - a.current_price);
+    sortedData.sort(function(a, b) {
+      return b.current_price - a.current_price;
+    });
   } else if (sortBy === 'percent_change') {
-    sortedData.sort((a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h);
+    sortedData.sort(function(a, b) {
+      return b.price_change_percentage_24h - a.price_change_percentage_24h;
+    });
   } else {
-    // Default to sorting by Market Cap
-    sortedData.sort((a, b) => b.market_cap - a.market_cap);
+    sortedData.sort(function(a, b) {
+      return b.market_cap - a.market_cap;
+    });
   }
 
   coinsGrid.innerHTML = "";
 
-  const priceFormat = new Intl.NumberFormat(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 });
-  const compactFormat = new Intl.NumberFormat(undefined, { maximumFractionDigits: 0 });
+  for (let i = 0; i < sortedData.length; i++) {
+    let coin = sortedData[i];
 
-  sortedData.forEach(coin => {
-    const isUp = coin.price_change_percentage_24h >= 0;
-    const card = document.createElement("div");
-    
-    // Notice the clickable-card class adding cursor:pointer styles
+    let isUp = false;
+    if (coin.price_change_percentage_24h >= 0) {
+      isUp = true;
+    }
+
+    let formattedPrice = coin.current_price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 });
+    let formattedMarketCap = coin.market_cap.toLocaleString(undefined, { maximumFractionDigits: 0 });
+    let formattedVolume = coin.total_volume.toLocaleString(undefined, { maximumFractionDigits: 0 });
+
+    let card = document.createElement("div");
     card.className = "card clickable-card";
-    
-    // Link entire card to the detail page
-    card.addEventListener("click", () => {
-      window.location.href = `coin.html?id=${coin.id}&currency=${currency}`;
+
+    card.addEventListener("click", function() {
+      window.location.href = "https://www.coingecko.com/en/coins/" + coin.id;
     });
+
+    let arrowIcon = "▼";
+    let changeClass = "down";
+
+    if (isUp === true) {
+      arrowIcon = "▲";
+      changeClass = "up";
+    }
+
+    let percentageNumber = Math.abs(coin.price_change_percentage_24h).toFixed(2);
 
     card.innerHTML = `
       <div class="card-top">
@@ -79,38 +106,42 @@ function renderCoins() {
         <span class="coin-rank">#${coin.market_cap_rank}</span>
       </div>
 
-      <div class="coin-price">${symbol}${priceFormat.format(coin.current_price)}</div>
+      <div class="coin-price">${symbol}${formattedPrice}</div>
 
-      <span class="coin-change ${isUp ? 'up' : 'down'}">
-        ${isUp ? '▲' : '▼'} ${Math.abs(coin.price_change_percentage_24h).toFixed(2)}%
+      <span class="coin-change ${changeClass}">
+        ${arrowIcon} ${percentageNumber}%
       </span>
 
       <div class="coin-meta">
         <div class="meta-row">
           <span class="meta-label">Market Cap</span>
-          <span class="meta-val">${symbol}${compactFormat.format(coin.market_cap)}</span>
+          <span class="meta-val">${symbol}${formattedMarketCap}</span>
         </div>
         <div class="meta-row">
           <span class="meta-label">24h Volume</span>
-          <span class="meta-val">${symbol}${compactFormat.format(coin.total_volume)}</span>
+          <span class="meta-val">${symbol}${formattedVolume}</span>
         </div>
       </div>
     `;
 
     coinsGrid.appendChild(card);
-  });
+  }
 }
 
-// Event Listeners for UI
-currencySelect.addEventListener("change", loadMarketData);
-sortSelect.addEventListener("change", renderCoins);
-
-refreshBtn.addEventListener("click", () => {
-    refreshBtn.classList.add("spinning");
-    loadMarketData().finally(() => {
-        setTimeout(() => refreshBtn.classList.remove("spinning"), 500);
-    });
+currencySelect.addEventListener("change", function() {
+  loadMarketData();
 });
 
-// Run Initializer
+sortSelect.addEventListener("change", function() {
+  renderCoins();
+});
+
+refreshBtn.addEventListener("click", async function() {
+  refreshBtn.classList.add("spinning");
+  await loadMarketData();
+  setTimeout(function() {
+    refreshBtn.classList.remove("spinning");
+  }, 500);
+});
+
 loadMarketData();
